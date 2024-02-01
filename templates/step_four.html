@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h3>Step Four: Review Data</h3>
+  
+  <!-- Anzeigen der CSV-Daten als Tabelle -->
+  <table>
+    <thead>
+      <tr>
+        {% for header in csv_headers %}
+          <th>{{ header }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in csv_rows %}
+        <tr>
+          {% for cell in row %}
+            <td>{{ cell }}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  <!-- "Start process"-Button -->
+  <form method="post" action="{% url 'start_process' %}">
+    {% csrf_token %}
+    <button type="submit">Start process</button>
+  </form>
+{% endblock %}

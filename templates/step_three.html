@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<article class="card">
+    <header>
+        <h3>Step Three</h3>
+    </header>
+  
+  <!-- Download-Button -->
+  <form method="get" action="{% url 'download_data' %}">
+    <button type="submit">Download Data</button>
+  </form>
+  
+  <!-- Hilfetext -->
+  <p>Bitte laden Sie die bearbeitete Datei hier hoch, nachdem Sie die Daten heruntergeladen und bearbeitet haben.</p>
+  
+  <!-- Upload-Formular -->
+  <form method="post" action="{% url 'upload_data' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="file_upload">
+    <button type="submit">Upload Data</button>
+  </form>
+</article>
+{% endblock %}

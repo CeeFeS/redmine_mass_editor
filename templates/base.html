@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Redmine Mass Editor{% endblock %}</title>
+    <!-- Optional: Einbinden von CSS-Dateien -->
+    {% load static %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic">
+</head>
+<body style="display: flex; flex-direction: column;align-items: center;margin: 0;min-height: 100vh;">
+    <header>
+        <nav>
+            <a href="#" class="brand">
+                <img class="logo" src="{% static 'images/logo.png' %}" alt="Redmine Mass Editor Logo">
+                <span>Redmine Mass Editor</span>
+            </a>
+
+            <div class="menu">
+                <a href="../admin" class="pseudo button icon-picture">Admin</a>
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class='error'>Logout</button>
+                </form>
+              </div>
+        </nav>
+    </header>
+    <br>
+    <br>
+    <br>
+    <main style="width: 70%;display: flex;flex-direction: column;align-items: center;">
+
+        {% block content %}
+        <!-- Der Inhalt der abgeleiteten Templates wird hier platziert -->
+        {% endblock %}
+
+    </main>
+
+    <footer>
+        <!-- Fußzeile der Seite -->
+        <p>&copy; 2024 CeeFeS: Redmine Mass Editor</p>
+    </footer>
+
+</body>
+</html>
