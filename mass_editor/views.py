@@ -4,9 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
+from .service.updateThread import update
+from threading import Thread
 import csv
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+import time
 
 
 @login_required
@@ -87,33 +88,21 @@ def step_four(request):
 
 
 @login_required
-def start_process(request):
-    csv_file_path = request.session.get('uploaded_csv_file_path', '')
-    
-    if not csv_file_path:
-        # Wenn kein Dateipfad vorhanden ist, leiten Sie zu einem Fehler oder zur Upload-Seite um
-        return redirect('step_three')
-    
-    try:
-        # Hier beginnt die Verarbeitungslogik
-        with open(csv_file_path, newline='', encoding='utf-8') as csvfile:
-            reader = csv.reader(csvfile)
-            for row in reader:
-                # Verarbeiten Sie jede Zeile der CSV-Datei
-                # Zum Beispiel: Speichern der Daten in der Datenbank
-                pass
-        # Nach erfolgreicher Verarbeitung, Dateipfad aus der Session entfernen
-        del request.session['uploaded_csv_file_path']
-        # Weiterleitung zu einer Bestätigungsseite oder zum nächsten Schritt
-        return redirect('step_five')
-    except Exception as e:
-        # Behandlung von Fehlern, z.B. Datei kann nicht gelesen werden
-        print(f"Fehler bei der Verarbeitung: {e}")
-        return HttpResponse("Ein Fehler ist aufgetreten", status=500)
-    
+def step_five(request):
+    thread = Thread(target = update, args = (request, ))
+    thread.start()
+
+    return render(request, 'step_five.html')
+
 @login_required
 def progress(request):
     # Beispiel: Abrufen des Fortschritts aus der Session
     progress = request.session.get('progress', 0)
+    print(progress)
     return JsonResponse({'progress': progress})
 
+@login_required
+def stop_process(request):
+    request.session['stop_requested'] = True
+    request.session.save()
+    return JsonResponse({'status': 'stop_requested'})

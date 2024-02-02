@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h3>Please select the identifiers (one or more)</h3>
+<h3>Step One: Please select the identifiers (one or more)</h3>
   <form method="post">
     {% csrf_token %}
     <label for="id_options">{{ form.options.label }}</label>

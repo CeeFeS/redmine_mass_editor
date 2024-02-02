@@ -2,7 +2,7 @@
 
 {% block content %}
   <h3>Step Five: Processing</h3>
-  
+
   <!-- Ladebalken -->
   <div id="progress-container" style="width: 100%; background-color: #ddd;">
     <div id="progress-bar" style="width: 0%; height: 30px; background-color: #4CAF50;"></div>
@@ -10,8 +10,21 @@
   
   <!-- Nicht editierbare Textarea für Fehler -->
   <textarea id="error-log" rows="10" style="width: 100%;" readonly></textarea>
+  <button id="stop-button" onclick="stopProcess()">Stop Process</button>
   
   <script>
+    function stopProcess() {
+    fetch('/stop-process/')
+      .then(response => response.json())
+      .then(data => {
+      if(data.status === 'stop_requested') {
+        console.log('Stopp wurde erfolgreich angefordert.');
+        // Optional: UI-Feedback geben, dass der Prozess gestoppt wird
+      }
+    })
+    .catch(error => console.error('Fehler beim Anfordern des Stopps:', error));
+    }
+
     function updateProgressBar() {
       fetch('/progress/')  // Pfad zur 'progress'-View
         .then(response => response.json())

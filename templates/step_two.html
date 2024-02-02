@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h3>Please select the columns you want to change.</h3>
+<h3>Step Two: Please select the columns you want to change.</h3>
   <form method="post">
     {% csrf_token %}
     <label for="id_options">{{ form.options.label }}</label>

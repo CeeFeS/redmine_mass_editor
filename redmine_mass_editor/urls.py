@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from mass_editor.views import step_one, step_two, step_three, download_data, upload_data, step_four, start_process, progress
+from mass_editor.views import step_one, step_two, step_three, download_data, upload_data, step_four, step_five, progress, stop_process
 from django.views.generic.base import RedirectView
 from django.urls import reverse_lazy
 
@@ -34,8 +34,9 @@ urlpatterns = [
     path('download-data/', download_data, name='download_data'),
     path('upload-data/', upload_data, name='upload_data'),
     path('step-four/', step_four, name='step_four'),
-    path('start-process/', start_process, name='start_process'),
-    path('step-five/', step_four, name='step_five'),
+    path('step-five/', step_five, name='step_five'),
     path('progress/', progress, name='progress'),
+    path('stop-process/', stop_process, name='stop_process'),
+
 
 ]
