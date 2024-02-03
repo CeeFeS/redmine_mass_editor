@@ -5,14 +5,14 @@ from django.http import HttpResponse
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
 from .service.updateThread import update
+from .service.fields import getAllFields
 from threading import Thread
 import csv
 import time
 
-
 @login_required
 def step_one(request):
-
+    getAllFields()
     if request.method == 'POST':
         form = CustomFieldForm(request.POST)
         if form.is_valid():
@@ -48,9 +48,11 @@ def step_three(request):
 def download_data(request):
     # Implementieren Sie hier die Logik für den Download der Daten
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="example.csv"'
+    response['Content-Disposition'] = 'attachment; filename="template.csv"'
     # Schreiben Sie Daten in die Response
-    response.write("id,name\n1,Example\n")
+    header_arrays = request.session.get('selected_options_identifier', '') + request.session['selected_options_columns']
+    header_string = ";".join(header_arrays)
+    response.write(header_string+"\n")
     return response
 
 @login_required

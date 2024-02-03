@@ -37,6 +37,4 @@ urlpatterns = [
     path('step-five/', step_five, name='step_five'),
     path('progress/', progress, name='progress'),
     path('stop-process/', stop_process, name='stop_process'),
-
-
 ]
