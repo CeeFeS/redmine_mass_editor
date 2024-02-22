@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
 from .service.updateThread import update
-from .service.fields import getAllFields
+from .service.fields import getAllFields, getFieldNameById
 from threading import Thread
 import csv
 import time
@@ -33,6 +33,7 @@ def step_two(request):
         form = CustomFieldForm(request.POST)
         if form.is_valid():
             request.session['selected_options_columns'] = form.cleaned_data['options']
+            print(form.cleaned_data['options'])
             return redirect('step_three')  # Leiten Sie zum nächsten Schritt weiter
     else:
         form = CustomFieldForm()
@@ -51,7 +52,12 @@ def download_data(request):
     response['Content-Disposition'] = 'attachment; filename="template.csv"'
     # Schreiben Sie Daten in die Response
     header_arrays = request.session.get('selected_options_identifier', '') + request.session['selected_options_columns']
-    header_string = ";".join(header_arrays)
+
+    header_names = []
+    for header in header_arrays:
+        header_names.append(getFieldNameById(header))
+        
+    header_string = ";".join(header_names)
     response.write(header_string+"\n")
     return response
 
